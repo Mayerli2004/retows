@@ -15,18 +15,18 @@ class AuthController extends Controller
             'password' => 'required|min:6'
         ]);
 
-        if(|Auth::attempt($attrs)){ 
+        if(!Auth::attempt($attrs)){ 
             return response([
                 'message' => 'Invalid Credentials.'
             ],403);
         }
         return response([
-            'user' => auth()->user();
+            'user' => auth()->user(),
             'token' => auth()->user()->createToken('secret')->plainTextToken
         ],200);
     }
     public function register(Request $request){
-        attrs = $request->validate([
+        $attrs = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed'
@@ -47,6 +47,6 @@ class AuthController extends Controller
         auth()->user()->tokens()->delete();
         return response([
             'message'=>'Logout Success.'
-        ],200)
+        ],200);
     }
 }
